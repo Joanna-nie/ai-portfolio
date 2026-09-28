@@ -31,8 +31,9 @@ def generate_fill_in_the_blank():
 
 if __name__ == "__main__":
     generate_fill_in_the_blank()
+```
 
-## 我的修改点
+## 3.我的修改点
 ① 修改了读取路径，并加上了编码。
 AI 默认写的相对路径 'data/生词表.csv' 在我的电脑上引发了 FileNotFoundError。我根据项目要求，改成了项目自带的 weekpath.data_path('生词表.csv')，并加上了 encoding='utf-8'，防止读取或写入时出现中文乱码。
 
@@ -48,7 +49,7 @@ AI 默认猜测我的表头是英文的 HSK Level，但真实的数据表（生�
 ⑤ 加入了项目路径注册代码。
  为了在 week03_Python 目录里也能成功 import weekpath，我在文件开头加了 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))，确保跨目录运行时模块能被正确找到。
 
-## 最终版 vs 初版差异说明
+## 4.最终版 vs 初版差异说明
 AI 初版没有处理 CSV 编码，会导致中文报错，我加上了 encoding='utf-8'。
 
 AI 把路径写死了，没有考虑项目的跨目录结构，我用 weekpath 工具替代了相对路径。
