@@ -27,12 +27,11 @@ def count_by_pos(words):
 
 
 def gen_exercises(words, out=None):
-    # 产物统一落到代码包根目录：否则"从哪个目录运行"决定了文件落在哪，
-    # 与 README 的"任意目录运行"承诺冲突，且散落的产物 .gitignore 拦不住。
     out = out or weekpath.root_path("练习.txt")
+    # 应用列表推导式：先用推导式生成所有句子列表，再一次性写入文件
+    lines = ["用“%s”造一个句子。（%s）\n" % (w["词汇"], w["词性"]) for w in words]
     with open(out, "w", encoding="utf-8") as f:
-        for w in words:
-            f.write("用“%s”造一个句子。（%s）\n" % (w["词汇"], w["词性"]))
+        f.writelines(lines)
 
 
 if __name__ == "__main__":
