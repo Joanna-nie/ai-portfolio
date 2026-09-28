@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>成语接龙 · 华文小助手（参考实现）</title>
+<style>
+  body{font-family:"Microsoft YaHei",sans-serif;text-align:center;background:#f7f3e9;color:#333;transition:background .3s}
+  h1{color:#8a5a2b}
+  #box{font-size:2.2em;margin:.5em;letter-spacing:.2em}
+  input{padding:.5em;font-size:1em;width:14em}
+  button{padding:.5em 1.2em;font-size:1em;background:#8a5a2b;color:#fff;border:none;border-radius:4px;cursor:pointer}
+  #tip{margin-top:1em;height:1.5em;font-weight:bold}
+  #score{color:#666}
+  .pop{animation:pop .3s}
+  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+</style>
+</head>
+<body>
+<h1>成语接龙 · 华文小助手</h1>
+<div id="box">愚公移山</div>
+<input id="ans" placeholder="接一个成语（首字 = 上一成语尾字）" onkeydown="if(event.key==='Enter')check()">
+<button onclick="check()">提交</button>
+<p id="tip"></p>
+<p id="score">得分：0　连对：0</p>
+<p style="color:#999;font-size:.9em">内置成语库：愚公移山 → 山穷水尽 → 尽心尽力 → 力大无穷 → 穷山恶水 → 水到渠成</p>
+
+<script>
+const BANK = ["愚公移山","山穷水尽","尽心尽力","力大无穷","穷山恶水","水到渠成",
+              "成千上万","万众一心","心口如一","一举两得","得心应手","手到擒来"];
+let last = "山", score = 0, streak = 0;
+const box = document.getElementById("box");
+const tip = document.getElementById("tip");
+const sc = document.getElementById("score");
+
+function beep(ok){
+  try{
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.frequency.value = ok ? 880 : 220; o.connect(g); g.connect(ctx.destination);
+    o.start(); g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+0.2); o.stop(ctx.currentTime+0.2);
+  }catch(e){}
+}
+
+function check(){
+  const w = document.getElementById("ans").value.trim();
+  if(!w){ tip.innerText = "请输入一个成语"; return; }
+  if(w.length < 4){ tip.innerText = "成语一般为 4 个字，请检查"; return; }
+  if(w[0] === last){
+    score += 10; streak += 1;
+    tip.innerText = "对！+10"; tip.style.color = "#2e7d32";
+    last = w[w.length-1];
+    box.innerText = w; box.classList.remove("pop"); void box.offsetWidth; box.classList.add("pop");
+    document.body.style.background = "#eaf7ea"; setTimeout(()=>document.body.style.background="#f7f3e9",300);
+    beep(true);
+    document.getElementById("ans").value = "";
+    if(BANK.indexOf(w) >= 0) tip.innerText = "对！+10（库内成语）";
+  } else {
+    streak = 0;
+    tip.innerText = "首字应为「" + last + "」"; tip.style.color = "#c62828";
+    beep(false);
+  }
+  sc.innerText = "得分：" + score + "　连对：" + streak;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>成语接龙 · 华文小助手</title>
+<style>
+  body{font-family:"Microsoft YaHei",sans-serif;text-align:center;background:#f7f3e9;color:#333}
+  h1{color:#8a5a2b}
+  #box{font-size:2em;margin:.6em;letter-spacing:.2em}
+  input{padding:.5em;font-size:1em;width:14em}
+  button{padding:.5em 1.2em;font-size:1em;background:#8a5a2b;color:#fff;border:none;border-radius:4px;cursor:pointer}
+  #tip{margin-top:1em;height:1.5em;font-weight:bold}
+  #score{color:#666}
+</style>
+</head>
+<body>
+<h1>成语接龙 · 华文小助手</h1>
+<div id="box">愚公移山</div>
+<input id="ans" placeholder="接一个成语（首字 = 上一成语尾字）" onkeydown="if(event.key==='Enter')check()">
+<button onclick="check()">提交</button>
+<p id="tip"></p>
+<p id="score">得分：0</p>
+
+<script>
+let last = "山";
+let score = 0;
+let used = ["愚公移山"];               // 已用过的成语，防重复
+function check(){
+  const w = document.getElementById("ans").value.trim();
+  const tip = document.getElementById("tip");
+  if(!w){ tip.innerText = "请输入一个成语"; return; }
+  if(w.length < 4){ tip.innerText = "成语一般为 4 个字，请检查"; return; }
+  if(used.indexOf(w) >= 0){
+    tip.innerText = "这个成语已经用过啦，换一个";
+    tip.style.color = "#c62828";
+    return;
+  }
+  if(w[0] === last){
+    score += 10;
+    used.push(w);
+    tip.innerText = "✓ 接对了！";
+    tip.style.color = "#2e7d32";
+    last = w[w.length - 1];
+    document.getElementById("box").innerText = w;
+    document.getElementById("score").innerText = "得分：" + score;
+    document.getElementById("ans").value = "";
+  } else {
+    tip.innerText = "✗ 首字应为「" + last + "」";
+    tip.style.color = "#c62828";
+  }
+}
+</script>
+</body>
+</html>
