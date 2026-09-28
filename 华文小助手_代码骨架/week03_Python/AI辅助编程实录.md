@@ -32,7 +32,7 @@ def generate_fill_in_the_blank():
 if __name__ == "__main__":
     generate_fill_in_the_blank()
 
-## 我的修改
+## 我的修改点
 ① 修改了读取路径，并加上了编码。
 AI 默认写的相对路径 'data/生词表.csv' 在我的电脑上引发了 FileNotFoundError。我根据项目要求，改成了项目自带的 weekpath.data_path('生词表.csv')，并加上了 encoding='utf-8'，防止读取或写入时出现中文乱码。
 
