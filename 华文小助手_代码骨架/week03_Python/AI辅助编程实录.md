@@ -32,23 +32,23 @@ def generate_fill_in_the_blank():
 if __name__ == "__main__":
     generate_fill_in_the_blank()
 
-我的修改点
-① 修改了读取路径，并加上了编码。
+## 我的修改点
+ ① 修改了读取路径，并加上了编码。
 AI 默认写的相对路径 'data/生词表.csv' 在我的电脑上引发了 FileNotFoundError。我根据项目要求，改成了项目自带的 weekpath.data_path('生词表.csv')，并加上了 encoding='utf-8'，防止读取或写入时出现中文乱码。
 
-② 修改了列名（HSK Level）。
+ ② 修改了列名（HSK Level）。
 AI 默认猜测我的表头是英文的 HSK Level，但真实的数据表（生词表.csv）中用的是中文表头 HSK等级。如果不修改，会引发 KeyError 报错，无法筛选数据。
 
-③ 修改了列名（词语）。
+ ③ 修改了列名（词语）。
  同样是因为 AI 对数据结构不熟悉，它写了 词语，但我实际 CSV 表头里叫 词汇，必须改成 df['HSK等级'] == 4]['词汇'] 才能正确提取词汇列表。
 
-④ 修改了输出路径及拼接方式。
+ ④ 修改了输出路径及拼接方式。
  AI 默认把文件生成在当前运行目录，我改成了 weekpath.root_path() 以便统一输出到代码包根目录。但最初尝试用 / 拼接时遇到了 TypeError（字符串不支持除法），后来查阅资料改用 os.path.join(weekpath.root_path(), '练习2.txt') 成功解决。
 
-⑤ 加入了项目路径注册代码。
+ ⑤ 加入了项目路径注册代码。
  为了在 week03_Python 目录里也能成功 import weekpath，我在文件开头加了 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))，确保跨目录运行时模块能被正确找到。
 
-最终版 vs 初版差异说明
+## 最终版 vs 初版差异说明
 AI 初版没有处理 CSV 编码，会导致中文报错，我加上了 encoding='utf-8'。
 
 AI 把路径写死了，没有考虑项目的跨目录结构，我用 weekpath 工具替代了相对路径。
