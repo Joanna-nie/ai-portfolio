@@ -1,0 +1,23 @@
+import pandas as pd
+
+def generate_fill_in_the_blank():
+    # 1. 读取数据
+    df = pd.read_csv('data/生词表.csv')
+    
+    # 2. 筛选HSK4的词汇
+    hsk4_words = df[df['HSK Level'] == 4]['词语'].tolist()
+    
+    # 3. 生成填空题
+    output_lines = []
+    for word in hsk4_words:
+        output_lines.append(f"用 ______ 造一个句子。（填空题）")
+        
+    # 4. 保存结果
+    with open('练习2.txt', 'w') as f:
+        for line in output_lines:
+            f.write(line + '\n')
+            
+    print(f"生成完成！共生成 {len(output_lines)} 道填空题。")
+
+if __name__ == "__main__":
+    generate_fill_in_the_blank()
