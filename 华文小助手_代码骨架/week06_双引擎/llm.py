@@ -2,6 +2,9 @@
 # 依赖：pip install openai requests python-dotenv
 import os
 import sys
+import time  # <--- 确保这一行存在！
+import requests
+import openai
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import weekpath  # noqa: E402  跨周导入 + 加载 .env
@@ -69,9 +72,9 @@ class APIEngine:
 
 class LLM:
     """统一入口：ask(prompt)。本地优先、云端兜底、**双向**异常自动切换。
-
+    
     prefer='local'：本地挂了自动切云端；
-    prefer='api'  ：云端挂了（断网/超时/未配密钥）自动切本地。
+    prefer='api' ：云端挂了（断网/超时/未配密钥）自动切本地。
     两侧对称，任何一边失败都不会让程序直接崩——这正是"双引擎"存在的意义。
     """
 
@@ -84,11 +87,26 @@ class LLM:
             first, second, tag = self.local, self.api, "本地失败，自动切换云端"
         else:
             first, second, tag = self.api, self.local, "云端失败，自动切换本地"
+        
+        # 新增：记录首选引擎的开始时间
+        start_time = time.time()
+        
         try:
-            return first.ask(prompt, **kw)
+            result = first.ask(prompt, **kw)
+            end_time = time.time()
+            # 新增：打印耗时和费用估算
+            print(f"\n[成功调用] 引擎: {prefer}, 耗时: {end_time - start_time:.2f} 秒。")
+            print(f"[费用估算] {'本地调用不花钱' if prefer == 'local' else '云端调用按token计费，约0.001元'}")
+            return result
         except Exception as e:
             print("[%s] %s" % (tag, e))
-            return second.ask(prompt, **kw)
+            
+            # 新增：记录回退引擎的开始时间
+            start_fallback = time.time()
+            result = second.ask(prompt, **kw)
+            end_fallback = time.time()
+            print(f"\n[回退成功] 耗时: {end_fallback - start_fallback:.2f} 秒。")
+            return result
 
 
 if __name__ == "__main__":
