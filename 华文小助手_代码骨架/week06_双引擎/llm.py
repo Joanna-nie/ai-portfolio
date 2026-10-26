@@ -1,5 +1,5 @@
-# W6 双引擎封装 —— 此后所有周统一经此调用
-# 依赖：pip install openai requests python-dotenv
+# 课后作业1增强：选择“调用耗时与费用估算打印”。
+# 理由：可以直观对比本地模型（免费、响应较快）和云端模型（按token计费）的差异，方便以后根据任务选型。
 import os
 import sys
 import time  # <--- 确保这一行存在！
