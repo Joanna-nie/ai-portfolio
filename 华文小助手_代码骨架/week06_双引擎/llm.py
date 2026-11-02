@@ -11,9 +11,6 @@ import weekpath  # noqa: E402  跨周导入 + 加载 .env
 
 weekpath.load_env()
 
-import requests  # noqa: E402
-import openai  # noqa: E402
-
 
 class LocalEngine:
     """本地引擎（Ollama）：隐私任务优先、断网可用。"""
