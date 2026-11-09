@@ -9,7 +9,7 @@ import weekpath  # noqa: E402  让跨周 import 生效（llm 在 week06、rag_qa
 weekpath.load_env()
 
 from llm import LLM  # noqa: E402
-from rag_qa import retrieve, build_prompt  # noqa: E402
+from rag_qa import retrieve, build_prompt
 
 llm = LLM()
 

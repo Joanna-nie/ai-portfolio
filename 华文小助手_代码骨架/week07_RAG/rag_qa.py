@@ -24,7 +24,7 @@ def get_retriever(k=3, rebuild=False):
     return vs.as_retriever(search_kwargs={"k": k})
 
 # 进阶A核心：给检索到的每一段打上【资料X】的标签
-def retrieve_with_sources(question):
+def retrieve(question):
     docs = get_retriever().invoke(question)
     ctx = ""
     for i, d in enumerate(docs):
@@ -42,7 +42,7 @@ def build_prompt(question, ctx):
 
 def rag_qa(question, prefer="local"):
     llm = LLM()
-    ctx = retrieve_with_sources(question)
+    ctx = retrieve(question)
     # 打印检索到的原文，让你亲眼看到1200在不在里面
     print(f"\n--- 检索到的原始资料 ---\n{ctx}-------------------------\n")
     return llm.ask(build_prompt(question, ctx), prefer=prefer)
